@@ -4,7 +4,7 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.g.have_nerd_font = true
-
+require("options")
 -- ========================================================================== --
 -- 2. BOOTSTRAP LAZY.NVIM
 -- ========================================================================== --
@@ -72,9 +72,9 @@ require("lazy").setup({
 			"williamboman/mason-lspconfig.nvim",
 			"saghen/blink.cmp",
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
+			-- mason-lspconfig now just bridges the gap, no need for ensure_installed here
 		},
 		config = function()
-			-- mason-lspconfig now just bridges the gap, no need for ensure_installed here
 			require("mason-lspconfig").setup()
 
 			-- 1. SET GLOBAL DEFAULTS
@@ -137,6 +137,8 @@ require("lazy").setup({
 				python = { "ruff_format" },
 				javascript = { "prettier" },
 				markdown = { "prettier" },
+				json = { "prettier" },
+				jsonc = { "prettier" },
 				sh = { "shfmt" },
 			},
 			format_on_save = { timeout_ms = 500, lsp_format = "fallback" },
@@ -174,6 +176,15 @@ require("lazy").setup({
 	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
 	{ "rose-pine/neovim", name = "rose-pine" },
 	{ "rebelot/kanagawa.nvim" },
+	{
+		"MeanderingProgrammer/render-markdown.nvim",
+		-- dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.nvim" }, -- if you use the mini.nvim suite
+		dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-mini/mini.icons" }, -- if you use standalone mini plugins
+		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+		---@module 'render-markdown'
+		---@type render.md.UserConfig
+		opts = {},
+	},
 })
 
 -- ========================================================================== --
@@ -187,7 +198,7 @@ require("mini.comment").setup()
 require("mini.keymap").setup()
 require("mini.move").setup()
 require("mini.pairs").setup()
-require("mini.snippets").setup()
+-- require("mini.snippets").setup()
 require("mini.splitjoin").setup()
 require("mini.surround").setup()
 
@@ -261,6 +272,9 @@ require("mini.starter").setup()
 require("mini.statusline").setup()
 require("mini.tabline").setup()
 require("mini.trailspace").setup()
+require("render-markdown").setup({
+	completions = { lsp = { enabled = true } },
+})
 
 -- ========================================================================== --
 -- 5. DIAGNOSTICS & KEYMAPS
@@ -269,4 +283,3 @@ require("mini.trailspace").setup()
 vim.cmd.colorscheme("tokyonight-moon")
 
 require("keymaps")
-require("options")

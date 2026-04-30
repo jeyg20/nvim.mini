@@ -58,7 +58,7 @@ map("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 --  See `:help vim.highlight.on_yank()`
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
-	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+	group = vim.api.nvim_create_augroup("kickstart-ighlight-yank", { clear = true }),
 	callback = function()
 		vim.highlight.on_yank()
 	end,
@@ -100,8 +100,8 @@ map("v", "K", ":m '<-2<CR>gv=gv")
 map("n", "J", "mzJ`z")
 
 -- Scroll down/up half a page and center cursor
-map("n", "<C-k>", "<C-d>zz")
-map("n", "<C-j>", "<C-u>zz")
+-- map("n", "<C-k>", "<C-d>zz")
+-- map("n", "<C-j>", "<C-u>zz")
 
 -- Next/previous search result and center cursor
 map("n", "n", "nzzzv")
@@ -126,3 +126,12 @@ map("n", "<Leader>xr", ":%!xxd -r<CR>", {
 	silent = true,
 	desc = "Revert buffer from hex (xxd -r)",
 })
+
+map("n", "<leader>bd", function()
+	require("mini.bufremove").delete(0, false)
+end, { desc = "Delete Buffer" })
+
+-- Force delete (discard changes)
+map("n", "<leader>bD", function()
+	require("mini.bufremove").delete(0, true)
+end, { desc = "Delete Buffer (Force)" })

@@ -79,12 +79,12 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.wrap = true
 vim.api.nvim_win_set_option(0, "breakindent", true)
-vim.opt.textwidth = 120
-vim.opt.colorcolumn = "+1"
+-- vim.opt.textwidth = 120
+--vim.opt.colorcolumn = "+1"
 vim.opt.termguicolors = true
-vim.cmd([[ 
-  hi ColorColumn ctermbg=gray guibg=gray 
-]])
+-- vim.cmd([[
+-- hi ColorColumn ctermbg=gray guibg=gray
+-- ]])
 
 vim.opt.sidescrolloff = 8
 vim.opt.mousescroll = "ver:3,hor:2"
