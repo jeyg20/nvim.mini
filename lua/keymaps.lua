@@ -82,11 +82,14 @@ map("n", "<leader>tc", function()
 	end
 end)
 
-map("n", "<leader>tm", function()
-	if vim.bo.filetype == "python" then
-		require("dap-python").test_method()
-	end
-end)
+map("n", "<leader>fm", function()
+	require("conform").format({ async = true, lsp_format = "fallback" })
+end, { desc = "Format buffer" })
+-- map("n", "<leader>tm", function()
+-- 	if vim.bo.filetype == "python" then
+-- 		require("dap-python").test_method()
+-- 	end
+-- end)
 -- vim: ts=2 sts=2 sw=2 et
 
 -- Navigation

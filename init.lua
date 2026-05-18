@@ -26,16 +26,40 @@ vim.opt.rtp:prepend(lazypath)
 -- ========================================================================== --
 require("lazy").setup({
 	{ "nvim-mini/mini.nvim", version = false },
-
 	{
 		"saghen/blink.cmp",
 		dependencies = { "rafamadriz/friendly-snippets" },
 		version = "1.*",
 		opts = {
-			keymap = { preset = "default" },
+			keymap = {
+				preset = "default",
+				["<Tab>"] = { "snippet_forward", "fallback" },
+				["<S-Tab>"] = { "snippet_backward", "fallback" },
+				["<CR>"] = { "accept", "fallback" },
+			},
 			appearance = { nerd_font_variant = "mono" },
-			completion = { documentation = { auto_show = false } },
-			sources = { default = { "lsp", "path", "snippets", "buffer" } },
+			completion = {
+				documentation = { auto_show = true, auto_show_delay_ms = 200 },
+				ghost_text = { enabled = true },
+			},
+			snippets = {
+				preset = "default",
+			},
+			sources = {
+				default = { "lsp", "snippets", "path", "buffer" },
+				providers = {
+					snippets = {
+						score_offset = 5, -- boost custom snippets above LSP
+						opts = {
+							search_paths = {
+								vim.fn.stdpath("config") .. "/snippets",
+							},
+						},
+					},
+					buffer = { score_offset = -3 },
+				},
+			},
+			signature = { enabled = true },
 			fuzzy = { implementation = "prefer_rust_with_warning" },
 		},
 		opts_extend = { "sources.default" },
@@ -97,6 +121,16 @@ require("lazy").setup({
 						},
 					},
 				},
+				-- Disable snippet support in capabilities for this server only
+				capabilities = vim.tbl_deep_extend("force", require("blink.cmp").get_lsp_capabilities(), {
+					textDocument = {
+						completion = {
+							completionItem = {
+								snippetSupport = false,
+							},
+						},
+					},
+				}),
 			})
 
 			-- Ruff for the 120-character logic and linting
@@ -104,7 +138,13 @@ require("lazy").setup({
 				init_options = {
 					settings = {
 						lineLength = 120,
-						lint = { ignore = { "E501" } },
+						lint = {
+							select = { "E", "F", "I", "UP", "B", "SIM" },
+							ignore = { "E501" },
+						},
+						format = {
+							preview = true,
+						},
 					},
 				},
 			})
@@ -134,7 +174,7 @@ require("lazy").setup({
 		opts = {
 			formatters_by_ft = {
 				lua = { "stylua" },
-				python = { "ruff_format" },
+				python = { "ruff_organize_imports", "ruff_format" },
 				javascript = { "prettier" },
 				markdown = { "prettier" },
 				json = { "prettier" },
@@ -150,11 +190,6 @@ require("lazy").setup({
 		config = function()
 			local lint = require("lint")
 			lint.linters_by_ft = { markdown = { "markdownlint" } }
-			vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-				callback = function()
-					lint.try_lint()
-				end,
-			})
 		end,
 	},
 
