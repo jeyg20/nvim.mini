@@ -184,12 +184,16 @@ require("lazy").setup({
 			format_on_save = { timeout_ms = 500, lsp_format = "fallback" },
 		},
 	},
-
 	{
 		"mfussenegger/nvim-lint",
 		config = function()
 			local lint = require("lint")
 			lint.linters_by_ft = { markdown = { "markdownlint" } }
+			vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
+				callback = function()
+					lint.try_lint()
+				end,
+			})
 		end,
 	},
 
@@ -218,7 +222,59 @@ require("lazy").setup({
 		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
 		---@module 'render-markdown'
 		---@type render.md.UserConfig
-		opts = {},
+		opts = {
+			completions = { lsp = { enabled = true } },
+		},
+	},
+	{
+		"olimorris/codecompanion.nvim",
+		version = "^19.0.0",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-treesitter/nvim-treesitter",
+			"ravitemer/mcphub.nvim",
+		},
+	},
+})
+
+require("codecompanion").setup({
+	adapters = {
+		http = {
+			anthropic = function()
+				return require("codecompanion.adapters").extend("anthropic", {
+					env = {
+						api_key = "ANTHROPIC_KEY",
+					},
+				})
+			end,
+		},
+	},
+	interactions = {
+		chat = {
+			adapter = "anthropic",
+			model = "claude-sonnet-4-20250514",
+		},
+		inline = {
+			adapter = "anthropic",
+			model = "claude-sonnet-4-20250514",
+		},
+		cmd = {
+			adapter = "anthropic",
+			model = "claude-sonnet-4-20250514",
+		},
+	},
+	opts = {
+		log_level = "DEBUG",
+	},
+	extensions = {
+		mcphub = {
+			callback = "mcphub.extensions.codecompanion",
+			opts = {
+				make_vars = true,
+				make_slash_commands = true,
+				show_result_in_chat = true,
+			},
+		},
 	},
 })
 
@@ -276,6 +332,11 @@ miniclue.setup({
 		miniclue.gen_clues.registers(),
 		miniclue.gen_clues.windows(),
 		miniclue.gen_clues.z(),
+		-- Group labels
+		{ mode = "n", keys = "<Leader>f", desc = "+find" },
+		{ mode = "n", keys = "<Leader>b", desc = "+buffer" },
+		{ mode = "n", keys = "<Leader>l", desc = "+lsp" },
+		{ mode = "n", keys = "<Leader>x", desc = "+hex" },
 	},
 
 	-- Optional: delay before the window opens (in milliseconds)
@@ -307,9 +368,6 @@ require("mini.starter").setup()
 require("mini.statusline").setup()
 require("mini.tabline").setup()
 require("mini.trailspace").setup()
-require("render-markdown").setup({
-	completions = { lsp = { enabled = true } },
-})
 
 -- ========================================================================== --
 -- 5. DIAGNOSTICS & KEYMAPS

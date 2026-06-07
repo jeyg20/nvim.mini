@@ -3,8 +3,8 @@ local map = vim.keymap.set
 map("n", "<Esc>", "<cmd>nohlsearch<CR>")
 map("n", "<leader>pv", vim.cmd.Ex)
 
-map("v", "J", ":m '>+1<CR>gv=gv")
-map("v", "K", ":m '<-2<CR>gv=gv")
+-- map("v", "J", ":m '>+1<CR>gv=gv")
+-- map("v", "K", ":m '<-2<CR>gv=gv")
 
 -- 'Black hole register' Delete text whitout storing it in the register or clipboard
 map({ "n", "v" }, "<leader>d", [["_d]])
@@ -46,9 +46,9 @@ map("n", "<down>", '<cmd>echo "Use j to move!!"<CR>')
 --
 --  See `:help wincmd` for a list of all window commands
 map("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
-map("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
-map("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 map("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+map("n", "<c-l>", "<c-w><c-l>", { desc = "move focus to the right window" })
+map("n", "<c-j>", "<c-w><c-j>", { desc = "move focus to the lower window" })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -64,36 +64,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
-vim.diagnostic.config({
-	virtual_text = false,
-	signs = true,
-	underline = true,
-	update_in_insert = false,
-	severity_sort = true,
-	float = { border = "rounded" },
-})
-
 -- Press 'gl' (Go Line) to see the error floating window
 map("n", "gl", vim.diagnostic.open_float, { desc = "Show diagnostic error" })
-
-map("n", "<leader>tc", function()
-	if vim.bo.filetype == "python" then
-		require("dap-python").test_class()
-	end
-end)
 
 map("n", "<leader>fm", function()
 	require("conform").format({ async = true, lsp_format = "fallback" })
 end, { desc = "Format buffer" })
--- map("n", "<leader>tm", function()
--- 	if vim.bo.filetype == "python" then
--- 		require("dap-python").test_method()
--- 	end
--- end)
--- vim: ts=2 sts=2 sw=2 et
-
--- Navigation
-map("n", "<leader>pv", vim.cmd.Ex)
 
 -- Move selected lines up & down
 map("v", "J", ":m '>+1<CR>gv=gv")
@@ -138,3 +114,6 @@ end, { desc = "Delete Buffer" })
 map("n", "<leader>bD", function()
 	require("mini.bufremove").delete(0, true)
 end, { desc = "Delete Buffer (Force)" })
+
+map("n", "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", { desc = "Toggle Chat" })
+map("v", "<leader>ca", "<cmd>CodeCompanionChat Add<cr>", { desc = "Add selection to Chat" })

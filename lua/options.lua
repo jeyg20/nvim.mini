@@ -78,7 +78,6 @@ vim.opt.hlsearch = false
 vim.opt.isfname:append("@-@")
 
 vim.opt.wrap = true
-vim.api.nvim_win_set_option(0, "breakindent", true)
 -- vim.opt.textwidth = 120
 --vim.opt.colorcolumn = "+1"
 vim.opt.termguicolors = true
@@ -91,4 +90,12 @@ vim.opt.mousescroll = "ver:3,hor:2"
 vim.opt.smoothscroll = true
 
 vim.api.nvim_set_hl(0, "LineNr", { fg = "#9ca3af" })
--- vim.api.nvim_set_hl(0, "CursorLineNr", { fg = "#e5e7eb", bold = true })
+
+vim.diagnostic.config({
+	virtual_text = false,
+	signs = true,
+	underline = true,
+	update_in_insert = false,
+	severity_sort = true,
+	float = { border = "rounded" },
+})
