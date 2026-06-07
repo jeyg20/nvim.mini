@@ -3,9 +3,6 @@ local map = vim.keymap.set
 map("n", "<Esc>", "<cmd>nohlsearch<CR>")
 map("n", "<leader>pv", vim.cmd.Ex)
 
--- map("v", "J", ":m '>+1<CR>gv=gv")
--- map("v", "K", ":m '<-2<CR>gv=gv")
-
 -- 'Black hole register' Delete text whitout storing it in the register or clipboard
 map({ "n", "v" }, "<leader>d", [["_d]])
 -- Diagnostic keymaps
@@ -50,20 +47,6 @@ map("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 map("n", "<c-l>", "<c-w><c-l>", { desc = "move focus to the right window" })
 map("n", "<c-j>", "<c-w><c-j>", { desc = "move focus to the lower window" })
 
--- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
-
--- Highlight when yanking (copying) text
---  Try it with `yap` in normal mode
---  See `:help vim.highlight.on_yank()`
-vim.api.nvim_create_autocmd("TextYankPost", {
-	desc = "Highlight when yanking (copying) text",
-	group = vim.api.nvim_create_augroup("kickstart-ighlight-yank", { clear = true }),
-	callback = function()
-		vim.highlight.on_yank()
-	end,
-})
-
 -- Press 'gl' (Go Line) to see the error floating window
 map("n", "gl", vim.diagnostic.open_float, { desc = "Show diagnostic error" })
 
@@ -77,10 +60,6 @@ map("v", "K", ":m '<-2<CR>gv=gv")
 
 -- Join lines but keep cursor in place with J
 map("n", "J", "mzJ`z")
-
--- Scroll down/up half a page and center cursor
--- map("n", "<C-k>", "<C-d>zz")
--- map("n", "<C-j>", "<C-u>zz")
 
 -- Next/previous search result and center cursor
 map("n", "n", "nzzzv")

@@ -51,16 +51,12 @@ vim.opt.signcolumn = "yes"
 vim.opt.updatetime = 750
 
 -- Decrease mapped sequence wait time
--- Displays which-key popup sooner
+-- Displays mini.clue popup sooner
 vim.opt.timeoutlen = 300
 
 -- Configure how new splits should be opened
 vim.opt.splitright = true
 vim.opt.splitbelow = true
-
--- Sets how neovim will display certain whitespace characters in the editor.
---  See `:help 'list'`
---  and `:help 'listchars'`
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = "split"
@@ -78,24 +74,10 @@ vim.opt.hlsearch = false
 vim.opt.isfname:append("@-@")
 
 vim.opt.wrap = true
--- vim.opt.textwidth = 120
---vim.opt.colorcolumn = "+1"
+vim.opt.textwidth = 120
+vim.opt.colorcolumn = "+1"
 vim.opt.termguicolors = true
--- vim.cmd([[
--- hi ColorColumn ctermbg=gray guibg=gray
--- ]])
 
 vim.opt.sidescrolloff = 8
 vim.opt.mousescroll = "ver:3,hor:2"
 vim.opt.smoothscroll = true
-
-vim.api.nvim_set_hl(0, "LineNr", { fg = "#9ca3af" })
-
-vim.diagnostic.config({
-	virtual_text = false,
-	signs = true,
-	underline = true,
-	update_in_insert = false,
-	severity_sort = true,
-	float = { border = "rounded" },
-})
