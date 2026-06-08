@@ -4,11 +4,36 @@ return {
 	dependencies = {
 		{ "nvim-lua/plenary.nvim", branch = "master" },
 		"nvim-treesitter/nvim-treesitter",
-		"ravitemer/mcphub.nvim",
 	},
 	config = function()
 		require("codecompanion").setup({
 			adapters = {
+				http = {
+					anthropic = function()
+						return require("codecompanion.adapters").extend("anthropic", {
+							env = {
+								api_key = "ANTHROPIC_KEY",
+							},
+							schema = {
+								model = {
+									default = "claude-sonnet-4-6",
+								},
+							},
+						})
+					end,
+					anthropic_haiku = function()
+						return require("codecompanion.adapters").extend("anthropic", {
+							env = {
+								api_key = "ANTHROPIC_KEY",
+							},
+							schema = {
+								model = {
+									default = "claude-haiku-4-5",
+								},
+							},
+						})
+					end,
+				},
 				acp = {
 					claude_code = function()
 						return require("codecompanion.adapters").extend("claude_code", {
@@ -18,29 +43,18 @@ return {
 						})
 					end,
 				},
-				http = {
-					anthropic = function()
-						return require("codecompanion.adapters").extend("anthropic", {
-							env = {
-								api_key = "ANTHROPIC_KEY",
-							},
-						})
-					end,
-				},
 			},
 			interactions = {
 				chat = {
 					adapter = "anthropic",
-					model = "claude-sonnet-4-20250514",
 				},
 				inline = {
-					adapter = "anthropic",
-					model = "claude-sonnet-4-20250514",
+					adapter = "anthropic_haiku",
 				},
 				cmd = {
-					adapter = "anthropic",
-					model = "claude-sonnet-4-20250514",
+					adapter = "anthropic_haiku",
 				},
+				-- This is what controls :CodeCompanionCLI
 				cli = {
 					agent = "claude_code",
 					agents = {
@@ -50,27 +64,11 @@ return {
 							description = "Claude Code CLI",
 							provider = "terminal",
 						},
-						-- codex = {
-						-- 	cmd = "codex",
-						-- 	args = {},
-						-- 	description = "OpenAI Codex CLI",
-						-- 	provider = "terminal",
-						-- },
 					},
 				},
 			},
 			opts = {
 				log_level = "DEBUG",
-			},
-			extensions = {
-				mcphub = {
-					callback = "mcphub.extensions.codecompanion",
-					opts = {
-						make_vars = true,
-						make_slash_commands = true,
-						show_result_in_chat = true,
-					},
-				},
 			},
 		})
 	end,

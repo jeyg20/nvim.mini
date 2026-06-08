@@ -88,6 +88,30 @@ map("n", "<leader>bD", function()
 	require("mini.bufremove").delete(0, true)
 end, { desc = "Delete Buffer (Force)" })
 
-map("n", "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", { desc = "Toggle Chat" })
-map("n", "<leader>ca", "<cmd>CodeCompanionChat Add<cr>", { desc = "Add selection to Chat" })
-map("n", "<leader>cl", "<cmd>CodeCompanionCLI Add<cr>", { desc = "Add selection to CLI" })
+map(
+	{ "n", "v" },
+	"<C-a>",
+	"<cmd>CodeCompanionActions<cr>",
+	{ noremap = true, silent = true, desc = "CodeCompanion actions" }
+)
+map(
+	{ "n", "v" },
+	"<LocalLeader>a",
+	"<cmd>CodeCompanionChat Toggle<cr>",
+	{ noremap = true, silent = true, desc = "Toggle CodeCompanion chat" }
+)
+map(
+	"v",
+	"ag",
+	"<cmd>CodeCompanionChat Add<cr>",
+	{ noremap = true, silent = true, desc = "Add selection to CodeCompanion chat" }
+)
+map(
+	"n",
+	"<LocalLeader>cl",
+	"<cmd>CodeCompanionCLI<cr>",
+	{ noremap = true, silent = true, desc = "Toggle CodeCompanion CLI" }
+)
+
+-- Expand 'cc' into 'CodeCompanion' in the command line
+vim.cmd([[cab cc CodeCompanion]])
