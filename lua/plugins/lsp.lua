@@ -57,10 +57,21 @@ return {
 			},
 		})
 
+		vim.lsp.config("ts_ls", {
+			on_attach = function(client)
+				client.server_capabilities.documentFormattingProvider = false
+				client.server_capabilities.documentRangeFormattingProvider = false
+			end,
+		})
+
 		-- 3. ENABLE THE SERVERS
 		vim.lsp.enable("lua_ls")
 		vim.lsp.enable("basedpyright")
 		vim.lsp.enable("ruff")
 		vim.lsp.enable("marksman")
+		vim.lsp.enable("ts_ls")
+		vim.lsp.enable("html")
+		vim.lsp.enable("cssls")
+		vim.lsp.enable("emmet_ls")
 	end,
 }
