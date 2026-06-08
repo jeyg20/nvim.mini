@@ -88,6 +88,9 @@ map("n", "<leader>bD", function()
 	require("mini.bufremove").delete(0, true)
 end, { desc = "Delete Buffer (Force)" })
 
+-- Open terminal in a vertical split
+map("n", "<leader>tv", "<cmd>split | terminal<cr>", { desc = "Open terminal in vertical split" })
+
 map(
 	{ "n", "v" },
 	"<C-a>",
