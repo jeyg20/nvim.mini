@@ -9,6 +9,18 @@ return {
 		require("codecompanion").setup({
 			adapters = {
 				http = {
+					gemini_flash_lite = function()
+						return require("codecompanion.adapters").extend("gemini", {
+							env = {
+								api_key = "GEMINI_API_KEY",
+							},
+							schema = {
+								model = {
+									default = "gemini-3.1-flash-lite",
+								},
+							},
+						})
+					end,
 					anthropic = function()
 						return require("codecompanion.adapters").extend("anthropic", {
 							env = {
@@ -42,11 +54,21 @@ return {
 							},
 						})
 					end,
+					gemini_cli = function()
+						return require("codecompanion.adapters").extend("gemini_cli", {
+							defaults = {
+								auth_method = "gemini-api-key", -- "oauth-personal"|"gemini-api-key"|"vertex-ai"
+							},
+							env = {
+								GEMINI_API_KEY = "cmd:op read op://personal/Gemini_API/credential --no-newline",
+							},
+						})
+					end,
 				},
 			},
 			interactions = {
 				chat = {
-					adapter = "anthropic",
+					adapter = "gemini_flash_lite",
 				},
 				inline = {
 					adapter = "anthropic_haiku",

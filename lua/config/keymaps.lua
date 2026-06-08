@@ -116,5 +116,18 @@ map(
 	{ noremap = true, silent = true, desc = "Toggle CodeCompanion CLI" }
 )
 
+map(
+	{ "n", "v" },
+	"<C-i>",
+	"<cmd>CodeCompanionActions<cr>",
+	{ noremap = true, silent = true, desc = "CodeCompanion Actions" }
+)
+map(
+	{ "n", "v" },
+	"<leader>ci",
+	"<cmd>CodeCompanionChat Inline<cr>",
+	{ noremap = true, silent = true, desc = "CodeCompanion Inline" }
+)
+
 -- Expand 'cc' into 'CodeCompanion' in the command line
 vim.cmd([[cab cc CodeCompanion]])
