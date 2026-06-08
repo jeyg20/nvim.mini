@@ -19,7 +19,11 @@ return {
 		-- ================================================================== --
 		-- UI & Aesthetics
 		-- ================================================================== --
-		require("mini.basics").setup()
+		require("mini.basics").setup({
+			mappings = {
+				windows = true,
+			},
+		})
 		require("mini.bufremove").setup()
 		local miniclue = require("mini.clue")
 		miniclue.setup({

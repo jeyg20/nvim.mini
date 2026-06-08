@@ -32,12 +32,6 @@ map("n", "gd", vim.lsp.buf.definition, { desc = "Goto Definition" })
 -- or just use <C-\><C-n> to exit terminal mode
 map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
--- TIP: Disable arrow keys in normal mode
-map("n", "<left>", '<cmd>echo "Use h to move!!"<CR>')
-map("n", "<right>", '<cmd>echo "Use l to move!!"<CR>')
-map("n", "<up>", '<cmd>echo "Use k to move!!"<CR>')
-map("n", "<down>", '<cmd>echo "Use j to move!!"<CR>')
-
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
 --
@@ -95,4 +89,5 @@ map("n", "<leader>bD", function()
 end, { desc = "Delete Buffer (Force)" })
 
 map("n", "<leader>cc", "<cmd>CodeCompanionChat Toggle<cr>", { desc = "Toggle Chat" })
-map("v", "<leader>ca", "<cmd>CodeCompanionChat Add<cr>", { desc = "Add selection to Chat" })
+map("n", "<leader>ca", "<cmd>CodeCompanionChat Add<cr>", { desc = "Add selection to Chat" })
+map("n", "<leader>cl", "<cmd>CodeCompanionCLI Add<cr>", { desc = "Add selection to CLI" })

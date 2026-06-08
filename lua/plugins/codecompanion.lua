@@ -1,14 +1,23 @@
 return {
 	"olimorris/codecompanion.nvim",
-	version = "^19.0.0",
+	version = "^19.14.0",
 	dependencies = {
-		"nvim-lua/plenary.nvim",
+		{ "nvim-lua/plenary.nvim", branch = "master" },
 		"nvim-treesitter/nvim-treesitter",
 		"ravitemer/mcphub.nvim",
 	},
 	config = function()
 		require("codecompanion").setup({
 			adapters = {
+				acp = {
+					claude_code = function()
+						return require("codecompanion.adapters").extend("claude_code", {
+							env = {
+								ANTHROPIC_API_KEY = "ANTHROPIC_KEY",
+							},
+						})
+					end,
+				},
 				http = {
 					anthropic = function()
 						return require("codecompanion.adapters").extend("anthropic", {
@@ -37,10 +46,16 @@ return {
 					agents = {
 						claude_code = {
 							cmd = "claude",
-							args = {},
+							args = { "--model", "claude-sonnet-4-6" },
 							description = "Claude Code CLI",
 							provider = "terminal",
 						},
+						-- codex = {
+						-- 	cmd = "codex",
+						-- 	args = {},
+						-- 	description = "OpenAI Codex CLI",
+						-- 	provider = "terminal",
+						-- },
 					},
 				},
 			},
