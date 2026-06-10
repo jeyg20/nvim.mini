@@ -7,12 +7,28 @@ return {
 	},
 	config = function()
 		require("codecompanion").setup({
+			display = {
+				action_palette = {
+					width = 95,
+					height = 10,
+					prompt = "Prompt ",
+					provider = "mini_pick",
+					opts = {
+						show_preset_actions = true,
+						show_preset_prompts = true,
+						title = "CodeCompanion actions",
+					},
+				},
+			},
 			adapters = {
 				http = {
 					gemini_flash_lite = function()
 						return require("codecompanion.adapters").extend("gemini", {
 							env = {
 								api_key = "GEMINI_API_KEY",
+							},
+							parameters = {
+								service_tier = "flex",
 							},
 							schema = {
 								model = {
@@ -57,10 +73,10 @@ return {
 					gemini_cli = function()
 						return require("codecompanion.adapters").extend("gemini_cli", {
 							defaults = {
-								auth_method = "gemini-api-key", -- "oauth-personal"|"gemini-api-key"|"vertex-ai"
+								auth_method = "gemini-api-key",
 							},
 							env = {
-								GEMINI_API_KEY = "cmd:op read op://personal/Gemini_API/credential --no-newline",
+								GEMINI_API_KEY = "GEMINI_API_KEY",
 							},
 						})
 					end,
@@ -78,12 +94,12 @@ return {
 				},
 				-- This is what controls :CodeCompanionCLI
 				cli = {
-					agent = "claude_code",
+					agent = "gemini_cli",
 					agents = {
-						claude_code = {
-							cmd = "claude",
-							args = { "--model", "claude-sonnet-4-6" },
-							description = "Claude Code CLI",
+						gemini_cli = {
+							cmd = "gemini",
+							args = {},
+							description = "Gemini CLI",
 							provider = "terminal",
 						},
 					},

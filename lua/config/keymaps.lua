@@ -115,19 +115,19 @@ map(
 	"<cmd>CodeCompanionCLI<cr>",
 	{ noremap = true, silent = true, desc = "Toggle CodeCompanion CLI" }
 )
+-- Normal mode: runs on the whole buffer (no range)
+map("n", "<C-i>", "<cmd>CodeCompanion<cr>", {
+	noremap = true,
+	silent = true,
+	desc = "CodeCompanion inline",
+})
 
-map(
-	{ "n", "v" },
-	"<C-i>",
-	"<cmd>CodeCompanionActions<cr>",
-	{ noremap = true, silent = true, desc = "CodeCompanion Actions" }
-)
-map(
-	{ "n", "v" },
-	"<leader>ci",
-	"<cmd>CodeCompanionChat Inline<cr>",
-	{ noremap = true, silent = true, desc = "CodeCompanion Inline" }
-)
+-- Visual mode only ("x"): runs on the highlighted selection
+map("x", "<C-i>", ":<C-u>'<,'>CodeCompanion<cr>", {
+	noremap = true,
+	silent = true,
+	desc = "CodeCompanion inline",
+})
 
 -- Expand 'cc' into 'CodeCompanion' in the command line
 vim.cmd([[cab cc CodeCompanion]])
