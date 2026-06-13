@@ -67,6 +67,7 @@ return {
 						return require("codecompanion.adapters").extend("claude_code", {
 							env = {
 								ANTHROPIC_API_KEY = "ANTHROPIC_KEY",
+								CLAUDE_CODE_OAUTH_TOKEN = "ANTHROPIC_OAUTH_TOKE",
 							},
 						})
 					end,
@@ -77,6 +78,16 @@ return {
 							},
 							env = {
 								GEMINI_API_KEY = "GEMINI_API_KEY",
+							},
+						})
+					end,
+					codex = function()
+						return require("codecompanion.adapters").extend("codex", {
+							defaults = {
+								auth_method = "ANTHROPIC_OAUTH_TOKE",
+							},
+							env = {
+								OPENAI_API_KEY = "GPT_KEY",
 							},
 						})
 					end,
@@ -92,14 +103,25 @@ return {
 				cmd = {
 					adapter = "anthropic_haiku",
 				},
-				-- This is what controls :CodeCompanionCLI
 				cli = {
-					agent = "gemini_cli",
+					agent = "claude_code",
 					agents = {
 						gemini_cli = {
 							cmd = "gemini",
 							args = {},
 							description = "Gemini CLI",
+							provider = "terminal",
+						},
+						codex = {
+							cmd = "codex",
+							args = {},
+							description = "Codex",
+							provider = "terminal",
+						},
+						claude_code = {
+							cmd = "claude",
+							args = {},
+							description = "Claude Code CLI",
 							provider = "terminal",
 						},
 					},
