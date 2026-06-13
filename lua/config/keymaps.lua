@@ -41,6 +41,11 @@ map("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 map("n", "<c-l>", "<c-w><c-l>", { desc = "move focus to the right window" })
 map("n", "<c-j>", "<c-w><c-j>", { desc = "move focus to the lower window" })
 
+map("n", "<leader><Left>", "<cmd>vertical resize -5<cr>", { desc = "Decrease window width" })
+map("n", "<leader><Right>", "<cmd>vertical resize +5<cr>", { desc = "Increase window width" })
+map("n", "<leader><Up>", "<cmd>resize +5<cr>", { desc = "Increase window height" })
+map("n", "<leader><Down>", "<cmd>resize -5<cr>", { desc = "Decrease window height" })
+
 -- Press 'gl' (Go Line) to see the error floating window
 map("n", "gl", vim.diagnostic.open_float, { desc = "Show diagnostic error" })
 
