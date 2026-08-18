@@ -80,6 +80,11 @@ map("n", "<leader><Right>", "<cmd>vertical resize +5<cr>", { desc = "Increase wi
 map("n", "<leader><Up>", "<cmd>resize +5<cr>", { desc = "Increase window height" })
 map("n", "<leader><Down>", "<cmd>resize -5<cr>", { desc = "Decrease window height" })
 
+-- Create splits
+map("n", "<leader>sh", "<cmd>split<cr>", { desc = "Split window horizontally" })
+map("n", "<leader>sv", "<cmd>vsplit<cr>", { desc = "Split window vertically" })
+map("n", "<leader>sc", "<C-w>c", { desc = "Close current split" })
+
 -- Press 'gl' (Go Line) to see the error floating window
 map("n", "gl", vim.diagnostic.open_float, { desc = "Show diagnostic error" })
 
@@ -127,8 +132,9 @@ map("n", "<leader>bD", function()
 	require("mini.bufremove").delete(0, true)
 end, { desc = "Delete Buffer (Force)" })
 
--- Open terminal in a vertical split
-map("n", "<leader>tv", "<cmd>split | terminal<cr>", { desc = "Open terminal in vertical split" })
+-- Open a terminal in a split
+map("n", "<leader>th", "<cmd>split | terminal<cr>", { desc = "Open terminal in horizontal split" })
+map("n", "<leader>tv", "<cmd>vsplit | terminal<cr>", { desc = "Open terminal in vertical split" })
 
 map(
 	{ "n", "v" },
