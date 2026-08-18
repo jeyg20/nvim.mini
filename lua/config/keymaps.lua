@@ -23,6 +23,40 @@ map("n", "<leader>fr", "<cmd>Pick resume<cr>", { desc = "Resume picker" })
 
 -- LSP Keymaps
 map("n", "gd", vim.lsp.buf.definition, { desc = "Goto Definition" })
+-- Rename symbol across the whole project via LSP.
+-- Semantic: renames real references only, never a string or comment that happens to match.
+map("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol (LSP)" })
+
+-- Fallback for when no LSP is attached: rename word under cursor in the current buffer.
+-- The old word is prefilled as the replacement with the cursor at its end, so tweaking
+-- an existing name is just typing; <C-w> clears it for a completely different one.
+map("n", "<leader>rw", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]], {
+	desc = "Rename word in buffer",
+})
+
+-- Fallback project-wide rename: ripgrep every whole-word hit into the quickfix list,
+-- then substitute across those files in one shot. No confirmation, no format-on-save.
+map("n", "<leader>rp", function()
+	local word = vim.fn.expand("<cword>")
+	if word == "" then
+		return
+	end
+	vim.ui.input({ prompt = "Rename '" .. word .. "' project-wide to: ", default = word }, function(new_name)
+		if not new_name or new_name == "" or new_name == word then
+			return
+		end
+		vim.cmd("silent grep! " .. vim.fn.shellescape("\\b" .. word .. "\\b"))
+		if vim.tbl_isempty(vim.fn.getqflist()) then
+			vim.notify("No matches for " .. word, vim.log.levels.WARN)
+			return
+		end
+		local hits = #vim.fn.getqflist()
+		-- noautocmd on the write skips BufWritePre, so conform's format_on_save
+		-- does not run once per file (500ms each) during the rename.
+		vim.cmd("silent! cfdo %s/\\<" .. word .. "\\>/" .. new_name .. "/ge | noautocmd update")
+		vim.notify("Renamed " .. word .. " -> " .. new_name .. " (" .. hits .. " hits)")
+	end)
+end, { desc = "Rename word project-wide (grep + cfdo)" })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which

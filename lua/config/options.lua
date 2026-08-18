@@ -81,3 +81,9 @@ vim.opt.termguicolors = true
 vim.opt.sidescrolloff = 8
 vim.opt.mousescroll = "ver:3,hor:2"
 vim.opt.smoothscroll = true
+
+-- Use ripgrep for :grep so quickfix-based project search/rename works
+if vim.fn.executable("rg") == 1 then
+	vim.opt.grepprg = "rg --vimgrep --smart-case"
+	vim.opt.grepformat = "%f:%l:%c:%m"
+end
