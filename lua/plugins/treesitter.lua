@@ -35,8 +35,15 @@ return {
 			desc = "Start treesitter highlighting and indent when a parser exists",
 			group = vim.api.nvim_create_augroup("treesitter-start", { clear = true }),
 			callback = function(ev)
+				-- Plugin scratch buffers (mini.files, mini.starter, pickers) carry
+				-- filetypes that no parser will ever match.
+				if vim.bo[ev.buf].buftype ~= "" then
+					return
+				end
 				local lang = vim.treesitter.language.get_lang(ev.match) or ev.match
-				if not pcall(vim.treesitter.language.add, lang) then
+				-- language.add() returns `nil, err` instead of raising, so a pcall here
+				-- would always report success. Test the return value itself.
+				if not vim.treesitter.language.add(lang) then
 					return
 				end
 				vim.treesitter.start(ev.buf, lang)
