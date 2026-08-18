@@ -24,6 +24,10 @@ return {
 				windows = true,
 			},
 		})
+		-- mini.basics sets `wrap = false` and runs after lua/config/options.lua,
+		-- so anything set there and also owned by basics has to be re-asserted here.
+		-- (`\w` from mini.basics toggles it per-buffer.)
+		vim.opt.wrap = true
 		require("mini.bufremove").setup()
 		local miniclue = require("mini.clue")
 		miniclue.setup({
@@ -66,6 +70,9 @@ return {
 				{ mode = "n", keys = "<Leader>b", desc = "+buffer" },
 				{ mode = "n", keys = "<Leader>l", desc = "+lsp" },
 				{ mode = "n", keys = "<Leader>x", desc = "+hex" },
+				{ mode = "n", keys = "<Leader>r", desc = "+rename" },
+				{ mode = "n", keys = "<Leader>s", desc = "+split" },
+				{ mode = "n", keys = "<Leader>t", desc = "+terminal" },
 			},
 
 			-- Optional: delay before the window opens (in milliseconds)
