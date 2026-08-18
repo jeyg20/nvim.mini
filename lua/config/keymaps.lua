@@ -157,15 +157,18 @@ map(
 map("n", "<LocalLeader>cl", function()
 	require("codecompanion").toggle_cli()
 end, { noremap = true, silent = true, desc = "Toggle CodeCompanion CLI" })
+-- NOTE: do not bind <C-i> here. Terminals send the same byte for <C-i> and <Tab>,
+-- so mapping it also remaps normal-mode <Tab> and kills the <C-o>/<C-i> jumplist.
+
 -- Normal mode: runs on the whole buffer (no range)
-map("n", "<C-i>", "<cmd>CodeCompanion<cr>", {
+map("n", "<LocalLeader>i", "<cmd>CodeCompanion<cr>", {
 	noremap = true,
 	silent = true,
 	desc = "CodeCompanion inline",
 })
 
 -- Visual mode only ("x"): runs on the highlighted selection
-map("x", "<C-i>", ":<C-u>'<,'>CodeCompanion<cr>", {
+map("x", "<LocalLeader>i", ":<C-u>'<,'>CodeCompanion<cr>", {
 	noremap = true,
 	silent = true,
 	desc = "CodeCompanion inline",
