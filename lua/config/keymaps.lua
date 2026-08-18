@@ -114,12 +114,9 @@ map(
 	"<cmd>CodeCompanionChat Add<cr>",
 	{ noremap = true, silent = true, desc = "Add selection to CodeCompanion chat" }
 )
-map(
-	"n",
-	"<LocalLeader>cl",
-	"<cmd>CodeCompanionCLI<cr>",
-	{ noremap = true, silent = true, desc = "Toggle CodeCompanion CLI" }
-)
+map("n", "<LocalLeader>cl", function()
+	require("codecompanion").toggle_cli()
+end, { noremap = true, silent = true, desc = "Toggle CodeCompanion CLI" })
 -- Normal mode: runs on the whole buffer (no range)
 map("n", "<C-i>", "<cmd>CodeCompanion<cr>", {
 	noremap = true,
