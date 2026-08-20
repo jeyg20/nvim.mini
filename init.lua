@@ -10,5 +10,6 @@ vim.g.have_nerd_font = true
 require("config.options")
 require("config.keymaps")
 require("config.autocmds")
+require("config.timetracker").setup()
 -- Plugin manager: bootstraps lazy.nvim and auto-imports lua/plugins/*.
 require("config.lazy")
