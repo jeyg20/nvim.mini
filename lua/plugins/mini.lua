@@ -67,6 +67,7 @@ return {
 				miniclue.gen_clues.z(),
 				-- Group labels
 				{ mode = "n", keys = "<Leader>f", desc = "+find" },
+				{ mode = "n", keys = "<Leader>a", desc = "+ai" },
 				{ mode = "n", keys = "<Leader>b", desc = "+buffer" },
 				{ mode = "n", keys = "<Leader>l", desc = "+lsp" },
 				{ mode = "n", keys = "<Leader>x", desc = "+hex" },

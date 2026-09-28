@@ -15,7 +15,6 @@
 | `]t` / `[t` is **tags**, not tabs | From Neovim defaults (`:tnext`). To change _tab_ use `gt`/`gT`; to change _buffer_ use `]b`/`[b`.                        |
 | Your tabline shows **buffers**    | `mini.tabline` lists buffers and only shows tabpages when >1 exists. So `]b`/`[b` walks what you see.                    |
 | Never map `<C-i>`                 | Terminals send one byte for `<C-i>` and `<Tab>`; mapping it breaks normal-mode `<Tab>` and the `<C-o>`/`<C-i>` jumplist. |
-| `ag` in visual                    | Bound to CodeCompanion, so it shadows an `a`+`g` textobject and adds a small delay after `a`.                            |
 
 ---
 
@@ -163,15 +162,15 @@
 
 ## AI — CodeCompanion
 
-| Keys                             | Action                           |
-| -------------------------------- | -------------------------------- |
-| `<C-a>` (n/v)                    | Action palette                   |
-| `<localleader>a` (`Space a`)     | Toggle chat                      |
-| `<localleader>i` (`Space i`) (n) | Inline on whole buffer           |
-| `<localleader>i` (`Space i`) (v) | Inline on selection              |
-| `<localleader>cl` (`Space cl`)   | Toggle CodeCompanion CLI         |
-| `ag` (v)                         | Add selection to chat            |
-| `:cc`                            | Command abbrev → `CodeCompanion` |
+| Keys                             | Action                                                                                  |
+| -------------------------------- | --------------------------------------------------------------------------------------- |
+| `<leader>aa` (n/v)               | Action palette                                                                          |
+| `<leader>ac` (n/v)               | Toggle chat                                                                             |
+| `<localleader>i` (`Space i`) (n) | Inline on whole buffer                                                                  |
+| `<localleader>i` (`Space i`) (v) | Inline on selection                                                                     |
+| `<localleader>cl` (`Space cl`)   | Toggle CodeCompanion CLI                                                                |
+| `<leader>ag` (v)                 | Add selection to chat                                                                   |
+| `:cc`                            | Command abbrev → `CodeCompanion` (only as the whole command; `:cc 3` is still quickfix) |
 
 ## Completion (blink.cmp)
 
@@ -203,7 +202,7 @@ Sources: LSP · snippets (`~/.config/nvim/snippets`, boosted +5) · path · buff
 ## mini.clue trigger keys
 
 `<Leader>` · `g` · `z` · `'` · `` ` `` · `<C-w>` · `<C-x>`
-Groups: `<leader>f`=find · `<leader>b`=buffer · `<leader>l`=lsp · `<leader>x`=hex · `<leader>r`=rename · `<leader>s`=split · `<leader>t`=terminal
+Groups: `<leader>a`=ai · `<leader>f`=find · `<leader>b`=buffer · `<leader>l`=lsp · `<leader>x`=hex · `<leader>r`=rename · `<leader>s`=split · `<leader>t`=terminal
 
 > Not triggered today: `[` `]` `\` and `s`. Those groups exist but show no popup — add them to
 > `triggers` in `lua/plugins/mini.lua` if you want the menu.
@@ -214,7 +213,7 @@ Groups: `<leader>f`=find · `<leader>b`=buffer · `<leader>l`=lsp · `<leader>x`
 - **Lint on save/read/insert-leave** — markdownlint (md) · eslint_d (js/ts)
 - **LSP servers** — lua_ls · basedpyright · ruff · marksman · ts_ls · html · cssls · emmet_ls
 - **Treesitter** — highlight + indent started per-buffer (nvim-treesitter `main` branch)
-- **AI routing** — chat → Gemini Flash Lite · inline/cmd → Claude Haiku · CLI → claude (also gemini, codex)
+- **AI routing** — chat → Claude Code over ACP (Pro subscription) · inline/cmd → GPT Luna · CLI → claude (also gemini, codex) · chat titles → Gemini Flash Lite
 - **Colorscheme** — tokyonight-moon (transparent)
 
 > Also loaded but not listed: `matchit` (extends `%`) and the stock `python` ftplugin.

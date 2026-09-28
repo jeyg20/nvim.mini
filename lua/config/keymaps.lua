@@ -140,21 +140,24 @@ end, { desc = "Delete Buffer (Force)" })
 map("n", "<leader>th", "<cmd>split | terminal<cr>", { desc = "Open terminal in horizontal split" })
 map("n", "<leader>tv", "<cmd>vsplit | terminal<cr>", { desc = "Open terminal in vertical split" })
 
+-- <leader>a is a pure "+ai" prefix: nothing is bound on the bare <leader>a, so
+-- neither of these has to wait out 'timeoutlen' before firing. <C-a>/<C-x> are
+-- left to Vim's built-in increment/decrement.
 map(
 	{ "n", "v" },
-	"<C-a>",
+	"<leader>aa",
 	"<cmd>CodeCompanionActions<cr>",
 	{ noremap = true, silent = true, desc = "CodeCompanion actions" }
 )
 map(
 	{ "n", "v" },
-	"<LocalLeader>a",
+	"<leader>ac",
 	"<cmd>CodeCompanionChat Toggle<cr>",
 	{ noremap = true, silent = true, desc = "Toggle CodeCompanion chat" }
 )
 map(
-	"v",
-	"ag",
+	"x",
+	"<leader>ag",
 	"<cmd>CodeCompanionChat Add<cr>",
 	{ noremap = true, silent = true, desc = "Add selection to CodeCompanion chat" }
 )
@@ -178,5 +181,8 @@ map("x", "<LocalLeader>i", ":<C-u>'<,'>CodeCompanion<cr>", {
 	desc = "CodeCompanion inline",
 })
 
--- Expand 'cc' into 'CodeCompanion' in the command line
-vim.cmd([[cab cc CodeCompanion]])
+-- Expand 'cc' into 'CodeCompanion' only when it is the whole ':' command, so it
+-- neither fires inside other commands (e.g. :s/cc/x/) nor fully hides :cc [nr].
+vim.keymap.set("ca", "cc", function()
+	return (vim.fn.getcmdtype() == ":" and vim.fn.getcmdline() == "cc") and "CodeCompanion" or "cc"
+end, { expr = true, desc = "Abbrev: cc -> CodeCompanion" })

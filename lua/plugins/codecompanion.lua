@@ -8,6 +8,20 @@ return {
 	config = function()
 		require("codecompanion").setup({
 			display = {
+				-- The CLI window inherits display.chat.window, so this moves both.
+				chat = {
+					window = {
+						position = "left",
+						-- Values below 1 are a fraction of the editor width.
+						width = 3 / 8,
+					},
+					-- Keep long /file and #buffer attachments from pushing the prompt
+					-- off screen.
+					fold_context = true,
+					show_settings = false,
+					show_token_count = true,
+					start_in_insert_mode = true,
+				},
 				action_palette = {
 					width = 95,
 					height = 10,
@@ -20,6 +34,12 @@ return {
 					},
 				},
 			},
+			-- Env keys used below (exported in ~/.zshrc): GEMINI_API_KEY, GPT_KEY and
+			-- ANTHROPIC_OAUTH_TOKEN (`claude setup-token`, bills the Claude Pro
+			-- subscription). Inline/cmd only accept HTTP adapters and the Anthropic
+			-- API rejects subscription tokens, so Claude is used via ACP/CLI only.
+			-- Never export ANTHROPIC_API_KEY: Claude Code would prefer it over the
+			-- subscription and bill the API.
 			adapters = {
 				http = {
 					gemini_flash_lite = function()
@@ -37,26 +57,16 @@ return {
 							},
 						})
 					end,
-					anthropic = function()
-						return require("codecompanion.adapters").extend("anthropic", {
+					-- Responses API rather than chat completions: gpt-5.6-luna is the
+					-- openai_responses adapter's own default and reasoning-capable there.
+					gpt_luna = function()
+						return require("codecompanion.adapters").extend("openai_responses", {
 							env = {
-								api_key = "ANTHROPIC_KEY",
+								api_key = "GPT_KEY",
 							},
 							schema = {
 								model = {
-									default = "claude-sonnet-4-6",
-								},
-							},
-						})
-					end,
-					anthropic_haiku = function()
-						return require("codecompanion.adapters").extend("anthropic", {
-							env = {
-								api_key = "ANTHROPIC_KEY",
-							},
-							schema = {
-								model = {
-									default = "claude-haiku-4-5",
+									default = "gpt-5.6-luna",
 								},
 							},
 						})
@@ -65,14 +75,25 @@ return {
 				acp = {
 					claude_code = function()
 						return require("codecompanion.adapters").extend("claude_code", {
+							-- The adapter expects claude-agent-acp; fall back to the older,
+							-- deprecated claude-code-acp until the new package is installed.
+							commands = (function()
+								local bin = vim.fn.executable("claude-agent-acp") == 1 and "claude-agent-acp"
+									or "claude-code-acp"
+								return { default = { bin }, yolo = { bin, "--yolo" } }
+							end)(),
 							env = {
-								ANTHROPIC_API_KEY = "ANTHROPIC_KEY",
-								CLAUDE_CODE_OAUTH_TOKEN = "ANTHROPIC_OAUTH_TOKE",
+								CLAUDE_CODE_OAUTH_TOKEN = "ANTHROPIC_OAUTH_TOKEN",
 							},
 						})
 					end,
 					gemini_cli = function()
 						return require("codecompanion.adapters").extend("gemini_cli", {
+							-- The adapter's --experimental-acp is deprecated in gemini >= 0.46.
+							commands = {
+								default = { "gemini", "--acp" },
+								yolo = { "gemini", "--yolo", "--acp" },
+							},
 							defaults = {
 								auth_method = "gemini-api-key",
 							},
@@ -84,7 +105,8 @@ return {
 					codex = function()
 						return require("codecompanion.adapters").extend("codex", {
 							defaults = {
-								auth_method = "ANTHROPIC_OAUTH_TOKE",
+								-- "api-key"|"chat-gpt"; we authenticate with GPT_KEY.
+								auth_method = "api-key",
 							},
 							env = {
 								OPENAI_API_KEY = "GPT_KEY",
@@ -94,14 +116,50 @@ return {
 				},
 			},
 			interactions = {
+				-- Chat runs Claude Code over ACP: the same agent as the CLI, but its
+				-- edits come back as diffs in Neovim. `\` completes the agent's own
+				-- slash commands, `/` CodeCompanion's; `/resume` picks up an ACP session.
 				chat = {
+					adapter = "claude_code",
+					-- Save every chat to disk once answered and keep it updated
+					-- (plugin default is autosave = false). Restore with /resume.
+					sessions = {
+						enabled = true,
+						autosave = true,
+						continuous_save = true,
+					},
+					roles = {
+						llm = function(adapter)
+							return adapter.formatted_name
+						end,
+						user = "Me",
+					},
+					opts = {
+						completion_provider = "blink",
+						-- ACP agents compact their own context; only manage it for the
+						-- HTTP adapters (e.g. after switching with `ga`).
+						context_management = {
+							enabled = function(adapter)
+								return adapter.type == "http"
+							end,
+						},
+					},
+				},
+				-- Titles chats via a cheap model; the default background adapter is
+				-- copilot, which isn't configured here.
+				background = {
 					adapter = "gemini_flash_lite",
+					chat = {
+						opts = {
+							enabled = true,
+						},
+					},
 				},
 				inline = {
-					adapter = "anthropic_haiku",
+					adapter = "gpt_luna",
 				},
 				cmd = {
-					adapter = "anthropic_haiku",
+					adapter = "gpt_luna",
 				},
 				cli = {
 					agent = "claude_code",
@@ -128,7 +186,7 @@ return {
 				},
 			},
 			opts = {
-				log_level = "DEBUG",
+				log_level = "ERROR",
 			},
 		})
 	end,
