@@ -9,7 +9,10 @@ return {
 			javascriptreact = { "eslint_d" },
 			typescriptreact = { "eslint_d" },
 		}
-		vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
+		-- InsertLeave fires constantly; running eslint_d on every exit from insert
+		-- mode is a lot of churn on a large file for no extra signal.
+		vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
+			desc = "Run linters",
 			callback = function()
 				lint.try_lint()
 			end,

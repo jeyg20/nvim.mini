@@ -9,7 +9,6 @@ return {
 		require("mini.align").setup()
 		require("mini.comment").setup()
 
-		require("mini.keymap").setup()
 		require("mini.move").setup()
 		require("mini.pairs").setup()
 		-- require("mini.snippets").setup()
@@ -89,7 +88,9 @@ return {
 		require("mini.sessions").setup()
 
 		require("mini.animate").setup({
-			cursor = { enable = true },
+			-- Cursor animation fires on every jump (}, n, gd) and costs ~250ms of
+			-- trail each time; the least worth its latency of the five.
+			cursor = { enable = false },
 			scroll = { enable = false },
 			resize = { enable = true },
 			open = { enable = true },

@@ -212,6 +212,7 @@ Groups: `<leader>a`=ai · `<leader>f`=find · `<leader>b`=buffer · `<leader>l`=
 ## Tooling (automatic)
 
 - **Format on save** — stylua (lua) · ruff (python) · prettier (js/ts/html/css/md/json) · shfmt (sh)
+  `:FormatToggle` disables it globally, `:FormatToggle!` for the current buffer only.
 - **Lint on save/read/insert-leave** — markdownlint (md) · eslint_d (js/ts)
 - **LSP servers** — lua_ls · basedpyright · ruff · marksman · ts_ls · html · cssls · emmet_ls
 - **Treesitter** — highlight + indent started per-buffer (nvim-treesitter `main` branch)

@@ -18,7 +18,9 @@ return {
 			vim.cmd.colorscheme("tokyonight-moon")
 		end,
 	},
-	{ "catppuccin/nvim", name = "catppuccin", priority = 1000 },
-	{ "rose-pine/neovim", name = "rose-pine" },
-	{ "rebelot/kanagawa.nvim" },
+	-- Alternates: kept installed but not loaded at startup. lazy.nvim hooks
+	-- ColorSchemePre and pulls the right one in when you `:colorscheme <name>`.
+	{ "catppuccin/nvim", name = "catppuccin", lazy = true },
+	{ "rose-pine/neovim", name = "rose-pine", lazy = true },
+	{ "rebelot/kanagawa.nvim", lazy = true },
 }

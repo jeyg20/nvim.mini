@@ -37,7 +37,7 @@ vim.opt.shiftwidth = 4
 -- Save undo history
 vim.opt.swapfile = false
 vim.opt.backup = false
-vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+vim.opt.undodir = vim.fn.expand("~") .. "/.vim/undodir"
 vim.opt.undofile = true
 
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
@@ -68,14 +68,13 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 15
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
-vim.opt.hlsearch = false
+vim.opt.hlsearch = true
 
 -- Allow the serach of files with @ and -
 vim.opt.isfname:append("@-@")
 
 vim.opt.wrap = true
 vim.opt.textwidth = 120
-vim.opt.colorcolumn = "+1"
 vim.opt.termguicolors = true
 
 vim.opt.sidescrolloff = 8

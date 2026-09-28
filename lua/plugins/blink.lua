@@ -20,14 +20,8 @@ return {
 		sources = {
 			default = { "lsp", "snippets", "path", "buffer" },
 			providers = {
-				snippets = {
-					score_offset = 5, -- boost custom snippets above LSP
-					opts = {
-						search_paths = {
-							vim.fn.stdpath("config") .. "/snippets",
-						},
-					},
-				},
+				-- search_paths already defaults to <config>/snippets.
+				snippets = { score_offset = 5 }, -- boost custom snippets above LSP
 				buffer = { score_offset = -3 },
 			},
 		},

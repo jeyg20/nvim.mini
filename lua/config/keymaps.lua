@@ -55,9 +55,14 @@ map("n", "<leader>rp", function()
 			return
 		end
 		local hits = #vim.fn.getqflist()
+		-- Both halves go into a :s command, so they need escaping. Unescaped, a
+		-- replacement containing & or ~ silently substitutes the wrong text
+		-- (whole match / previous replacement) rather than erroring.
+		local pat = vim.fn.escape(word, "/\\.*$^~[]")
+		local rep = vim.fn.escape(new_name, "/\\&~")
 		-- noautocmd on the write skips BufWritePre, so conform's format_on_save
 		-- does not run once per file (500ms each) during the rename.
-		vim.cmd("silent! cfdo %s/\\<" .. word .. "\\>/" .. new_name .. "/ge | noautocmd update")
+		vim.cmd("silent! cfdo %s/\\<" .. pat .. "\\>/" .. rep .. "/ge | noautocmd update")
 		vim.notify("Renamed " .. word .. " -> " .. new_name .. " (" .. hits .. " hits)")
 	end)
 end, { desc = "Rename word project-wide (grep + cfdo)" })
