@@ -1,13 +1,16 @@
 return {
 	"neovim/nvim-lspconfig",
 	dependencies = {
-		"williamboman/mason-lspconfig.nvim",
+		"mason-org/mason-lspconfig.nvim",
 		"saghen/blink.cmp",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 		-- mason-lspconfig now just bridges the gap, no need for ensure_installed here
 	},
 	config = function()
-		require("mason-lspconfig").setup()
+		-- automatic_enable would start every mason-installed package that happens to
+		-- ship an lspconfig spec -- including formatters like stylua ("stylua --lsp").
+		-- The explicit vim.lsp.enable() list below is the whole intended set.
+		require("mason-lspconfig").setup({ automatic_enable = false })
 
 		-- 1. SET GLOBAL DEFAULTS
 		vim.lsp.config("*", {
@@ -24,7 +27,7 @@ return {
 			settings = {
 				basedpyright = {
 					analysis = {
-						typeCheckingMode = "basic",
+						typeCheckingMode = "standard",
 						diagnosticMode = "openFilesOnly",
 					},
 				},

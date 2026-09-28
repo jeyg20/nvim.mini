@@ -1,6 +1,6 @@
 return {
 	"WhoIsSethDaniel/mason-tool-installer.nvim",
-	dependencies = { "williamboman/mason.nvim" },
+	dependencies = { "mason-org/mason.nvim" },
 	config = function()
 		require("mason").setup()
 		require("mason-tool-installer").setup({
@@ -20,7 +20,9 @@ return {
 				"eslint_d",
 				"emmet-ls",
 			},
-			auto_update = true,
+			-- Updating on every startup means a network round-trip each launch.
+			-- Run :MasonToolsUpdate when you actually want new versions.
+			auto_update = false,
 			run_on_start = true,
 			start_delay = 1000,
 		})

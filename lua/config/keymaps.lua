@@ -107,8 +107,9 @@ map("n", "J", "mzJ`z")
 map("n", "n", "nzzzv")
 map("n", "N", "Nzzzv")
 
--- Restart LSP server with <leader>zig
-map("n", "<leader>lsp", "<cmd>LspRestart<cr>")
+map("n", "<leader>lr", "<cmd>LspRestart<cr>", { desc = "Restart LSP servers" })
+map("n", "<leader>li", "<cmd>LspInfo<cr>", { desc = "LSP info" })
+map("n", "<leader>ll", "<cmd>LspLog<cr>", { desc = "LSP log" })
 
 -- "Greatest remap ever": paste over selection without yanking it
 map("x", "<leader>p", [["_dP]])

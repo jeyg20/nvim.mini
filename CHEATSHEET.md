@@ -92,7 +92,9 @@
 | `[D` / `]D`   | First / last diagnostic in buffer | nvim   |
 | `<C-w>d`      | Diagnostics under cursor          | nvim   |
 | `<leader>q`   | Diagnostics → loclist             | you    |
-| `<leader>lsp` | `:LspRestart`                     | you    |
+| `<leader>lr`  | `:LspRestart`                     | you    |
+| `<leader>li`  | `:LspInfo`                        | you    |
+| `<leader>ll`  | `:LspLog`                         | you    |
 | `<leader>fm`  | Format buffer (conform)           | you    |
 
 ## Renaming
