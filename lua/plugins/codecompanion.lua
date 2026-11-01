@@ -82,6 +82,13 @@ return {
 									or "claude-code-acp"
 								return { default = { bin }, yolo = { bin, "--yolo" } }
 							end)(),
+							-- Applied on every new chat session; matched against the agent's
+							-- model ids/names case-insensitively.
+							defaults = {
+								session_config_options = {
+									model = "sonnet",
+								},
+							},
 							env = {
 								CLAUDE_CODE_OAUTH_TOKEN = "ANTHROPIC_OAUTH_TOKEN",
 							},
